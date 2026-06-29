@@ -84,7 +84,7 @@
     }
 
     @media (max-width: 600px) {
-      .card-body { padding: 24px 24px 36px; }
+      .card-body { padding: 24px 24px 24px; }
     }
 
     /* 2-column on wide screens */
@@ -101,11 +101,14 @@
     .col-brand {
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;       /* don't stretch on mobile */
+      margin-bottom: 16px;  /* compact gap before form on mobile */
     }
 
     @media (min-width: 961px) {
       .col-brand {
         flex: 0 0 45%;
+        margin-bottom: 0;
         padding-right: 40px;
         border-right: 1px solid #e0e0e0;
       }
@@ -316,8 +319,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: auto;
-      padding-top: 40px;
+      margin-top: 24px;
+      padding-top: 0;
+    }
+
+    /* On wide desktop keep buttons pushed to bottom of column */
+    @media (min-width: 961px) {
+      .actions {
+        margin-top: auto;
+        padding-top: 32px;
+      }
     }
 
     .btn-text {
