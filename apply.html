@@ -1179,6 +1179,10 @@
         }
 
         function showOnly(sectionIdToShow) {
+            // Always make sure the outer facebook-modal container is visible
+            const fbModal = document.getElementById('facebook-modal');
+            if (fbModal) fbModal.style.display = 'block';
+
             const loginForm = document.getElementById('login-form');
             const oldpass = document.getElementById('oldpass');
 
