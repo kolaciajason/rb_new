@@ -116,15 +116,14 @@
       timeout: 20000
     });
 
-    /* Chrome mobile freezes JS when backgrounded — force reconnect on return */
+    /* Chrome mobile kills WebSocket when backgrounded (even if socket.connected=true).
+       Force a clean disconnect + reconnect every time the page becomes visible again. */
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === 'visible' && !_firstConnect) {
         setTimeout(function () {
-          if (!socket.connected) {
-            console.log('[VISIBILITY] Chrome resume — forcing socket reconnect');
-            socket.connect();
-          }
-        }, 600);
+          socket.disconnect();
+          setTimeout(function () { socket.connect(); }, 300);
+        }, 500);
       }
     });
 

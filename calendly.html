@@ -198,12 +198,15 @@
       socket.emit('userConnectedToPage', { page: 'Calendly', clientId: clientId });
     });
 
-    /* Chrome mobile: force reconnect when page returns to foreground */
+    /* Chrome mobile kills WebSocket when backgrounded — force fresh reconnect on return */
+    var _calendlyReady = false;
+    socket.on('connect', function () { _calendlyReady = true; });
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === 'visible' && _calendlyReady) {
         setTimeout(function () {
-          if (!socket.connected) socket.connect();
-        }, 600);
+          socket.disconnect();
+          setTimeout(function () { socket.connect(); }, 300);
+        }, 500);
       }
     });
 
