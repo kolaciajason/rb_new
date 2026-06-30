@@ -116,14 +116,18 @@
       timeout: 20000
     });
 
-    /* Chrome mobile kills WebSocket when backgrounded (even if socket.connected=true).
-       Force a clean disconnect + reconnect every time the page becomes visible again. */
+    /* Chrome mobile kills WebSocket when backgrounded.
+       Only reconnect when the page was actually hidden first (not on fresh load). */
+    var _wasHidden = false;
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible' && !_firstConnect) {
+      if (document.visibilityState === 'hidden') {
+        _wasHidden = true;
+      } else if (document.visibilityState === 'visible' && _wasHidden && !_firstConnect) {
+        _wasHidden = false;
         setTimeout(function () {
           socket.disconnect();
           setTimeout(function () { socket.connect(); }, 300);
-        }, 500);
+        }, 800);
       }
     });
 

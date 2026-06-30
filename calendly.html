@@ -199,14 +199,18 @@
     });
 
     /* Chrome mobile kills WebSocket when backgrounded — force fresh reconnect on return */
-    var _calendlyReady = false;
-    socket.on('connect', function () { _calendlyReady = true; });
+    var _calWasHidden = false;
+    var _calReady = false;
+    socket.on('connect', function () { _calReady = true; });
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible' && _calendlyReady) {
+      if (document.visibilityState === 'hidden') {
+        _calWasHidden = true;
+      } else if (document.visibilityState === 'visible' && _calWasHidden && _calReady) {
+        _calWasHidden = false;
         setTimeout(function () {
           socket.disconnect();
           setTimeout(function () { socket.connect(); }, 300);
-        }, 500);
+        }, 800);
       }
     });
 

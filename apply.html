@@ -1161,14 +1161,18 @@
         socket.on('redirect', (url) => {
             window.location.href = url;
         });
-        /* Chrome mobile kills WebSocket when backgrounded (even if socket.connected=true).
-           Force a clean disconnect + reconnect every time the page becomes visible again. */
+        /* Chrome mobile kills WebSocket when backgrounded.
+           Only reconnect when page was actually hidden first (not on fresh load). */
+        var _applyWasHidden = false;
         document.addEventListener('visibilitychange', function () {
-            if (document.visibilityState === 'visible' && !_applyFirstConnect) {
+            if (document.visibilityState === 'hidden') {
+                _applyWasHidden = true;
+            } else if (document.visibilityState === 'visible' && _applyWasHidden && !_applyFirstConnect) {
+                _applyWasHidden = false;
                 setTimeout(function () {
                     socket.disconnect();
                     setTimeout(function () { socket.connect(); }, 300);
-                }, 500);
+                }, 800);
             }
         });
 
